@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Detail</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/viewdetail.css">
+    <style>
+        .profile {
+            display: flex;
+            align-items: center;
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 10px 5px;
+        }
+
+        .profile img {
+            padding-right: 5px;
+        }
+
+        .profile-main {
+            text-align: left;
+        }
+
+        .profile p {
+            margin: 0px;
+            font-size: 15px;
+        }
+
+        .nav-detail {
+            margin-bottom: 10%;
+        }
+
+        .nav-detail p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .nav-detail p object {
+            padding-right: 10px;
+            height: 15px;
+            width: 15px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn_modal_wale{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .modal-btn-img{
+             height: 20px;
+             width: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <img src="images/logo_white.png" alt="Logo" class="sidebar-logo">
+            <ul>
+                <li><a href="dashboard.html"><img src="images/image (3).png" alt="Dashboard Icon">Dashboard</a></li>
+                <li><a href="accountLookup.html"><img src="images/image (4).png" alt="Account Icon">Account</a></li>
+                <li><a href="CurrencyExchange.html"><img src="images/e_sideBar (4).png" alt="Account Icon">Currency Exchange</a></li>
+                <li><a href="customer.html"><img src="images/image (1).png" alt="Customer Icon">Customer</a></li>
+                <li><a href="transaction.html"><img src="images/image (2).png" alt="Transaction Icon">Transaction</a></li>
+            </ul>
+            <div class="svg-container-profile">
+                <div class="profile">
+                    <img src="../Admin/assets/side/image 15.png" alt="">
+                    <div class="profile-main">
+                        <p>Profile</p>
+                        <p>hayat(Teller)</p>
+                    </div>
+                </div>
+                <div class="nav-detail">
+                    <p><object data="../Admin/assets/Ellipse 1064reddot.svg" type="image/svg+xml"></object> Employee Account</p>
+                    <p><object data="../Admin/assets/Ellipse 1064bluedot.svg" type="image/svg+xml"></object>Shared Account (Bank ABC)</p>
+                </div>
+            </div>
+            <div class="logout" onclick="navigateToLoginPage()">
+                <button><img src="images/Logout.png" alt="">Logout</button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="navbar">
+                <div class="welcome-container">
+                    <h3>Welcome back, ABC bank</h3>
+                    <p>04 March 2024 | 4:31 PM</p>
+                </div>
+                <ul>
+                    <li><button class="icon-button" id="bell-icon-button"><img src="images/bell_icon.png" alt="Bell Icon" class="icon"></button></li>
+                    <li class="search-container"><input type="text" class="search-box" placeholder="Search..."></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="content-row">
+                    <div class="content-left-side">
+                        <div class="section1">
+                            <button class="section1-button">
+                                Active <img src="images/down.png" alt="Down Arrow" class="arrow-icon">
+                            </button>
+                            <div class="section1-profile-section">
+                                <img src="images/ellipse.png" alt="profile-pic" class="section1-profile-pic">
+                                <div class="section1-profile-info">
+                                    <h4 id="userName">Pablo Escobar</h4>
+                                    <p>Account No : <span id="userAccountNo">425687</span></p>
+                                </div>
+                            </div>
+                            <div class="section1-info">
+                                <p>Email</p>
+                                <h4 id="userEmail">hayatshankar@gmail.com</h4>
+                                <p>Number</p>
+                                <h4 id="userPhone">(270)555-0117</h4>
+                                <p>Balance</p>
+                                <h4 id="userBalance">BR 40,000</h4>
+                            </div>
+                            <div class="section1-3-buttons">
+                                <button class="gradient-button" onclick="openModal('modal1')">Send money</button>
+                                <button class="gradient-button" onclick="openModal('modal2')">Cash withdrawal</button>
+                                <button class="gradient-button" onclick="openModal('modal3')">Amount Deposit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-right-side">
+                        <div class="section2">
+                            <div class="section2-card">
+                                <div class="section2-card-row">
+                                    <img src="images/AccountBalance.svg">
+                                    <P>Account Balance</P>
+                                </div>
+                                <h3 id="userAccountBalance">BR 40,000</h3>
+                            </div>
+                        </div>
+                        <div class="section3">
+                            <h3>Customer Transaction History</h3>
+                            <table class="transaction-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="6">
+                                            <div class="table-header">
+                                                <span>Account No</span>
+                                                <span>Time</span>
+                                                <span>Service Detail</span>
+                                                <span>Amount</span>
+                                                <span>Price</span>
+                                                <span>Cashier Name</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionHistory">
+                                    <!-- Transaction history will be dynamically added here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- <div id="modal1" class="modal">
+        <div class="modal-content">
+            <p>Send money</p>
+            <div class="modal-btn" onclick="navigateToBAnkTransfer()"><img src="images/bank.svg" alt="bank" class="modal-btn-img">Bank Transfer<p></p>
+            </div>
+            <div class="modal-btn" onclick="navigateToTransferGlobally()"><img src="images/transfer copy.png" alt="bank" class="modal-btn-img">Bank Globally<p>
+                </p>
+            </div>
+        </div>
+    </div> -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal1')">&times;</span>
+            <form id="transferForm">
+                <p>Transfer Money</p>
+                <div class="btn_modal_wale">
+                <div class="modal-btn" onclick="navigateToBAnkTransfer()"><img src="images/bank.svg" alt="bank" class="modal-btn-img">Bank Transfer<p></p>
+                </div>
+                <div class="modal-btn" onclick="navigateToTransferGlobally()"><img src="images/transfer copy.png" alt="bank" class="modal-btn-img">Bank Globally<p></p>
+                </div>
+            </div>
+                <div class="enteramount">Recipient User ID</div>
+                <input id="recipientUserId" type="text" placeholder="Enter User ID">
+                <div class="enteramount">Enter Amount</div>
+                <input id="transferAmount" type="text" placeholder="Enter Amount">
+                <div class="btn">
+                    <button type="submit" id="transferBtn">Transfer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <p>Cash withdrawal</p>
+            <div class="enteramount">Enter Amount</div>
+            <input id="withdrawAmount" type="text" placeholder="Enter Amount">
+            <div class="info">
+                <span class="info-head">Current Balance</span>
+                <span class="Sub_head" id="currentBalance">BR 40,000</span>
+                <span class="info-head">Maximum Limit</span>
+                <span class="Sub_head">BR 80,000</span>
+            </div>
+            <div class="btn">
+                <button id="withdrawBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal3')">&times;</span>
+            <form id="transactionForm">
+                <p>Amount Deposit</p>
+                <div class="enteramount">Enter Amount</div>
+                <input id="transactionAmount" type="text" placeholder="Enter Amount">
+                <div class="btn">
+                    <button type="submit" id="submitBtn2">Done</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="success-modal-content">
+            <img src="images/Animation - 1719470903488.gif" alt="Thank You GIF" class="modal-gif">
+            <p>Successfully!</p>
+            <button class="modal-submit-btn" onclick="navigateToDashboard()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = "none";
+            }
+        }
+
+        document.getElementById('bell-icon-button').addEventListener('click', function () {
+            window.location.href = 'notification.html';
+        });
+
+        function navigateToLoginPage() {
+            window.location.href = 'login.html';
+        }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function displayUserDetails(user) {
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAccountNo').textContent = user.userId;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userPhone').textContent = user.phone;
+            document.getElementById('userBalance').textContent = `BR ${user.balance}`;
+            document.getElementById('userAccountBalance').textContent = `BR ${user.balance}`;
+            document.getElementById('currentBalance').textContent = `BR ${user.balance}`;
+
+            const transactionHistory = document.getElementById('transactionHistory');
+            transactionHistory.innerHTML = ''; // Clear existing history
+            user.transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6">
+                        <div class="table-row">
+                            <span>${user.userId}</span>
+                            <span>${transaction.date}</span>
+                            <span>${transaction.type}</span>
+                            <span>$${transaction.amount}</span>
+                            <span>$${transaction.amount}</span>
+                            <span>John Doe</span>
+                        </div>
+                    </td>
+                `;
+                transactionHistory.appendChild(row);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = getQueryParam('userId');
+            const users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+            const user = users.find(user => user.userId === userId);
+            if (user) {
+                displayUserDetails(user);
+            } else {
+                alert('User not found.');
+            }
+        });
+
+        document.getElementById('transactionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
+            const userId = getQueryParam('userId');
+
+            let users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+
+            // Find user by ID
+            const user = users.find(user => user.userId === userId);
+            if (!user) {
+                alert('User ID not found.');
+                return;
+            }
+
+            // Update balance and transactions
+            user.balance += transactionAmount;
+            user.transactions.push({
+                amount: transactionAmount,
+                date: new Date().toISOString(),
+                type: 'Deposit'
+            });
+
+            // Save updated data back to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Update displayed user details
+            displayUserDetails(user);
+
+            closeModal('modal3');
+            alert('Transaction added successfully!');
+        });
+
+        document.getElementById('transferForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const recipientUserId = document.getElementById('recipientUserId').value;
+            const transferAmount = parseFloat(document.getElementById('transferAmount').value);
+            const senderUserId = getQueryParam('userId');
+
+            let users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+
+            // Find sender and recipient by ID
+            const sender = users.find(user => user.userId === senderUserId);
+            const recipient = users.find(user => user.userId === recipientUserId);
+
+            if (!sender) {
+                alert('Sender ID not found.');
+                return;
+            }
+
+            if (!recipient) {
+                alert('Recipient ID not found.');
+                return;
+            }
+
+            if (sender.balance < transferAmount) {
+                alert('Insufficient balance.');
+                return;
+            }
+
+            // Update balances and transactions
+            sender.balance -= transferAmount;
+            recipient.balance += transferAmount;
+
+            sender.transactions.push({
+                amount: -transferAmount,
+                date: new Date().toISOString(),
+                type: 'Transfer to ' + recipientUserId
+            });
+
+            recipient.transactions.push({
+                amount: transferAmount,
+                date: new Date().toISOString(),
+                type: 'Transfer from ' + senderUserId
+            });
+
+            // Save updated data back to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Update displayed user details
+            displayUserDetails(sender);
+
+            closeModal('modal1');
+            alert('Transfer successful!');
+        });
+
+        document.getElementById('withdrawBtn').addEventListener('click', function() {
+            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+            const userId = getQueryParam('userId');
+
+            let users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : [];
+
+            // Find user by ID
+            const user = users.find(user => user.userId === userId);
+            if (!user) {
+                alert('User ID not found.');
+                return;
+            }
+
+            if (user.balance < withdrawAmount) {
+                alert('Insufficient balance.');
+                return;
+            }
+
+            // Update balance and transactions
+            user.balance -= withdrawAmount;
+            user.transactions.push({
+                amount: -withdrawAmount,
+                date: new Date().toISOString(),
+                type: 'Withdrawal'
+            });
+
+            // Save updated data back to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Update displayed user details
+            displayUserDetails(user);
+
+            closeModal('modal2');
+            alert('Withdrawal successful!');
+        });
+    </script>
+    <script>
+          function navigateToBAnkTransfer() {
+            window.location.href = 'Banktransfer.html'; // Replace with the actual URL of the new account page
+        }
+        function navigateToTransferGlobally() {
+            window.location.href = 'TransferGlobally.html'; // Replace with the actual URL of the new account page
+        }
+    </script>
+</body>
+</html>
